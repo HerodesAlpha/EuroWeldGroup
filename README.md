@@ -86,6 +86,10 @@ Optional arguments include **`force_scale`** (mm/N), **`show_segment_labels`**, 
 
 The repo is already a **git** project on branch **`main`** (with `.gitignore`). Publishing needs a one-time GitHub login.
 
+If **`git remote -v`** prints nothing, your code only exists on this PC until you push—GitHub will not show the project yet.
+
+**Windows (no `PATH` needed):** run **`login-github.cmd`**, then **`push-github.cmd`** from this folder (they call `gh.exe` under Program Files).
+
 1. Install [GitHub CLI](https://cli.github.com/) if it is not on your `PATH` (on Windows: `winget install GitHub.cli`). **Close and reopen the terminal** (or Cursor) so `gh` is recognized; otherwise run the full path, e.g. `"C:\Program Files\GitHub CLI\gh.exe" auth login --web`.
 2. Log in (opens a browser / device flow):
 
