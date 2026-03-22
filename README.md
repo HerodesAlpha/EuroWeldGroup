@@ -81,3 +81,30 @@ plot_welds_and_loads_three_planes(segments, loadcase_dict, save_path=Path("out.p
 ```
 
 Optional arguments include **`force_scale`** (mm/N), **`show_segment_labels`**, and **`title`**. With **`save_path`**, the figure is saved and closed.
+
+## Publish to GitHub
+
+The repo is already a **git** project on branch **`main`** (with `.gitignore`). Publishing needs a one-time GitHub login.
+
+1. Install [GitHub CLI](https://cli.github.com/) if it is not on your `PATH` (on Windows: `winget install GitHub.cli`).
+2. Log in (opens a browser / device flow):
+
+   ```text
+   gh auth login --web --hostname github.com --git-protocol https
+   ```
+
+3. From the project folder, create the remote repository and push (pick another name if `EuroWeldGroup` is taken):
+
+   ```text
+   cd c:\Dev\EuroWeldGroup
+   gh repo create EuroWeldGroup --public --source=. --remote=origin --push
+   ```
+
+   Use `--private` instead of `--public` for a private repo.
+
+If the empty repo already exists on GitHub, add it and push:
+
+```text
+git remote add origin https://github.com/YOUR_USER/EuroWeldGroup.git
+git push -u origin main
+```
