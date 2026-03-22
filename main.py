@@ -903,8 +903,11 @@ if __name__ == "__main__":
 
     from pathlib import Path
 
-    from weld_plotting import plot_welds_and_loads_three_planes
-
     _plot_file = Path(__file__).resolve().parent / "weld_loads_three_views.png"
-    plot_welds_and_loads_three_planes(segments, loadcases[0], save_path=_plot_file)
-    print(f"Plot saved to {_plot_file}")
+    try:
+        from weld_plotting import plot_welds_and_loads_three_planes
+
+        plot_welds_and_loads_three_planes(segments, loadcases[0], save_path=_plot_file)
+        print(f"Plot saved to {_plot_file}")
+    except ImportError as exc:
+        print(f"Plot skipped ({exc}). Install: pip install -r requirements.txt")

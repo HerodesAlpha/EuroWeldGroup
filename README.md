@@ -86,7 +86,7 @@ Optional arguments include **`force_scale`** (mm/N), **`show_segment_labels`**, 
 
 The repo is already a **git** project on branch **`main`** (with `.gitignore`). Publishing needs a one-time GitHub login.
 
-1. Install [GitHub CLI](https://cli.github.com/) if it is not on your `PATH` (on Windows: `winget install GitHub.cli`).
+1. Install [GitHub CLI](https://cli.github.com/) if it is not on your `PATH` (on Windows: `winget install GitHub.cli`). **Close and reopen the terminal** (or Cursor) so `gh` is recognized; otherwise run the full path, e.g. `"C:\Program Files\GitHub CLI\gh.exe" auth login --web`.
 2. Log in (opens a browser / device flow):
 
    ```text

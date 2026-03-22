@@ -10,8 +10,6 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-import matplotlib.pyplot as plt
-
 
 def _segment_xyz(seg: Any) -> Tuple[Tuple[float, float, float], Tuple[float, float, float]]:
     return (0.0, float(seg.y1), float(seg.z1)), (0.0, float(seg.y2), float(seg.z2))
@@ -99,6 +97,13 @@ def plot_welds_and_loads_three_planes(
 
     If ``save_path`` is set, the figure is written there and closed (no interactive window).
     """
+    try:
+        import matplotlib.pyplot as plt
+    except ImportError as e:
+        raise ImportError(
+            "Plotting needs matplotlib. Install with: pip install -r requirements.txt"
+        ) from e
+
     Fx, Fy, Fz, Pfx, Pfy, Pfz = _parse_loadcase(loadcase)
     x_fx, y_fx, z_fx = Pfx
     x_fy, y_fy, z_fy = Pfy
