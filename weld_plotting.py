@@ -87,6 +87,8 @@ def plot_welds_and_loads_three_planes(
     title: Optional[str] = None,
     save_path: str | Path | None = None,
     dpi: float = 150.0,
+    vertical: bool = False,
+    pdf_page: bool = False,
 ) -> Any:
     """
     Three orthographic views: XY (x horizontal, y vertical), XZ (x horizontal, z vertical),
@@ -94,6 +96,11 @@ def plot_welds_and_loads_three_planes(
 
     Force arrows use vector (Fx,0,0), (0,Fy,0), (0,0,Fz) at Pfx, Pfy, Pfz with length |F| * scale.
     Components normal to a view are shown as a marker and annotation.
+
+    If ``vertical`` is True, the three panels are stacked top-to-bottom (portrait-friendly).
+
+    If ``pdf_page`` is True (with ``vertical``), margins are tuned for a fixed A4 figure so content
+    stays inside the page.
 
     If ``save_path`` is set, the figure is written there and closed (no interactive window).
     """
@@ -113,7 +120,10 @@ def plot_welds_and_loads_three_planes(
         segments, Pfx, Pfy, Pfz, Fx, Fy, Fz, force_scale
     )
 
-    fig, axes = plt.subplots(1, 3, figsize=figsize)
+    if vertical:
+        fig, axes = plt.subplots(3, 1, figsize=figsize)
+    else:
+        fig, axes = plt.subplots(1, 3, figsize=figsize)
     ax_xy, ax_xz, ax_yz = axes[0], axes[1], axes[2]
 
     # --- Welds in each projection ---
@@ -208,23 +218,31 @@ def plot_welds_and_loads_three_planes(
     ax_yz.set_title("YZ (look along −x, weld plane)")
 
     lc_name = loadcase.get("name", "")
-    fig.suptitle(
+    st = (
         title
         if title is not None
-        else (f"Weld + loads — {lc_name}" if lc_name else "Weld + loads (three views)"),
-        fontsize=11,
-        y=1.02,
+        else (f"Weld + loads — {lc_name}" if lc_name else "Weld + loads (three views)")
+    )
+    fig.suptitle(
+        st,
+        fontsize=10 if (vertical and pdf_page) else 11,
+        y=0.985 if (vertical and pdf_page) else (1.01 if vertical else 1.02),
     )
     fig.text(
         0.5,
-        0.02,
+        0.04 if (vertical and pdf_page) else (0.012 if vertical else 0.02),
         f"Arrow length = |F| × scale,  scale = {scale:.6g} mm/N  (same in all panels)",
         ha="center",
-        fontsize=9,
+        fontsize=7 if (vertical and pdf_page) else (8 if vertical else 9),
         style="italic",
     )
 
-    plt.tight_layout(rect=(0, 0.06, 1, 0.96))
+    if vertical and pdf_page:
+        plt.tight_layout(rect=(0.05, 0.07, 0.95, 0.90), h_pad=0.45, pad=0.5)
+    elif vertical:
+        plt.tight_layout(rect=(0, 0.05, 1, 0.94), h_pad=1.2)
+    else:
+        plt.tight_layout(rect=(0, 0.06, 1, 0.96))
     if save_path is not None:
         p = Path(save_path)
         fig.savefig(p, dpi=dpi, bbox_inches="tight")
